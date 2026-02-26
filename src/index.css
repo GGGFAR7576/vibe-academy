@@ -147,6 +147,12 @@
     border-color: hsl(var(--glass-border));
   }
 
+  @media (max-width: 767px) {
+    .glass {
+      backdrop-filter: none;
+    }
+  }
+
   .glass-card {
     @apply glass rounded-2xl p-6;
     box-shadow: var(--shadow-soft);

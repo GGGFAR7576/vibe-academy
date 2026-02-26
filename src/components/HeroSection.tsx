@@ -5,21 +5,36 @@ import heroImage from "@/assets/hero-developer.jpg";
 import FloatingOrbs from "./FloatingOrbs";
 import MagneticButton from "./MagneticButton";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const HeroSection = () => {
   const ref = useRef<HTMLElement>(null);
   const { t } = useLanguage();
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 1.1]);
+  const isMobile = useIsMobile();
 
   const scrollToApply = () => {
     window.open("https://t.me/smc_tg911", "_blank");
+  };
+
+  const DesktopParallaxBackground = () => {
+    const { scrollYProgress } = useScroll({
+      target: ref,
+      offset: ["start start", "end start"],
+    });
+
+    const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+    const scale = useTransform(scrollYProgress, [0, 0.5], [1, 1.1]);
+
+    return (
+      <motion.div style={{ y, scale }} className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background z-10" />
+        <img
+          src={heroImage}
+          alt="Developer working"
+          className="w-full h-full object-cover object-center"
+        />
+      </motion.div>
+    );
   };
 
   // Text animation variants
@@ -49,21 +64,22 @@ const HeroSection = () => {
       ref={ref}
       className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16 md:pt-20"
     >
-      {/* Background Image with Parallax */}
-      <motion.div
-        style={{ y, scale }}
-        className="absolute inset-0 z-0"
-      >
-        <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background z-10" />
-        <img
-          src={heroImage}
-          alt="Developer working"
-          className="w-full h-full object-cover object-center"
-        />
-      </motion.div>
+      {/* Background Image */}
+      {isMobile ? (
+        <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background z-10" />
+          <img
+            src={heroImage}
+            alt="Developer working"
+            className="w-full h-full object-cover object-center"
+          />
+        </div>
+      ) : (
+        <DesktopParallaxBackground />
+      )}
 
       {/* Floating Orbs */}
-      <FloatingOrbs />
+      {!isMobile && <FloatingOrbs />}
 
       {/* Grain overlay for premium feel */}
       <div 
@@ -74,10 +90,7 @@ const HeroSection = () => {
       />
 
       {/* Content */}
-      <motion.div
-        style={{ opacity }}
-        className="relative z-20 container-tight section-padding text-center py-12 md:py-0"
-      >
+      <motion.div className="relative z-20 container-tight section-padding text-center py-12 md:py-0">
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -86,7 +99,7 @@ const HeroSection = () => {
           {/* Badge */}
           <motion.div variants={itemVariants} className="mb-4 md:mb-6">
             <motion.span 
-              className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 text-[10px] sm:text-xs font-medium tracking-wide uppercase bg-secondary/80 backdrop-blur-sm text-secondary-foreground rounded-full border border-border/50"
+              className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 text-[10px] sm:text-xs font-medium tracking-wide uppercase bg-secondary/80 backdrop-blur-none md:backdrop-blur-sm text-secondary-foreground rounded-full border border-border/50"
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
             >
@@ -152,7 +165,7 @@ const HeroSection = () => {
                 const element = document.getElementById("philosophy");
                 element?.scrollIntoView({ behavior: "smooth" });
               }}
-              className="w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 text-sm sm:text-base font-medium text-foreground bg-background/50 backdrop-blur-sm border border-border rounded-full transition-all duration-300 hover:bg-secondary"
+              className="w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 text-sm sm:text-base font-medium text-foreground bg-background/50 backdrop-blur-none md:backdrop-blur-sm border border-border rounded-full transition-all duration-300 hover:bg-secondary"
             >
               {t.hero.learnMore}
             </MagneticButton>
@@ -196,7 +209,7 @@ const HeroSection = () => {
           <motion.div
             animate={{ y: [0, 8, 0] }}
             transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-            className="w-6 h-10 border-2 border-muted-foreground/30 rounded-full flex items-start justify-center p-2 backdrop-blur-sm"
+            className="w-6 h-10 border-2 border-muted-foreground/30 rounded-full flex items-start justify-center p-2 backdrop-blur-none md:backdrop-blur-sm"
           >
             <motion.div 
               className="w-1.5 h-1.5 bg-foreground rounded-full"

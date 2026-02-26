@@ -11,12 +11,15 @@ import FAQSection from "@/components/FAQSection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 import ScrollProgress from "@/components/ScrollProgress";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Index = () => {
+  const isMobile = useIsMobile();
+
   return (
     <LanguageProvider>
       <div className="min-h-screen bg-background">
-        <ScrollProgress />
+        {!isMobile && <ScrollProgress />}
         <Navigation />
         <main>
           <HeroSection />

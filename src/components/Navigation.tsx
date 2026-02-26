@@ -97,7 +97,7 @@ const Navigation = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMobileMenuOpen(false)}
-              className="fixed inset-0 bg-foreground/20 backdrop-blur-sm z-40 lg:hidden"
+              className="fixed inset-0 bg-foreground/20 backdrop-blur-none md:backdrop-blur-sm z-40 lg:hidden"
             />
 
             {/* Menu Panel */}
